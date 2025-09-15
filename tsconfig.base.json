@@ -15,6 +15,7 @@
         "skipDefaultLibCheck": true,
         "baseUrl": ".",
         "paths": {
+            "@ecommerce/layout": ["modules/feature/layout/src/index.ts"],
             "@ecommerce/ui": ["modules/feature/ui/src/index.ts"]
         }
     },
