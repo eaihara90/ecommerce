@@ -40,19 +40,22 @@ export class ProductSearchComponent implements OnInit {
     );
     private _destroyRef = inject(DestroyRef);
     control = new FormControl('', { nonNullable: true });
-    products$: Observable<ProductModel[]> = of([...productsMock]);
+    products$: Observable<ProductModel[] | null> = of([...productsMock]);
     filteredProducts!: Observable<ProductModel[]>;
 
     ngOnInit(): void {
         this.products$ = this.control.valueChanges.pipe(
-            debounceTime(750),
+            debounceTime(500),
             distinctUntilChanged(),
-            filter((text) => text.length > 1),
+            filter((text) => text.length > 0),
             map((text) => text.toLowerCase().trim()),
             switchMap((text) =>
                 this.productDataAccessService.searchByName(text)
             ),
-            catchError((_) => of([]))
+            catchError((_) => {
+                console.log(_);
+                return of(null);
+            })
             // takeUntilDestroyed(this._destroyRef)
         );
     }
